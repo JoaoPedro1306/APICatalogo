@@ -74,7 +74,7 @@ namespace APICatalogo.Controllers
             }
         }
 
-        [HttpPut("{id:int:min(1))}")]
+        [HttpPut("{id:int:min(1)}")]
         public ActionResult Put(int id, Produto produto)
         {
             try
@@ -95,6 +95,7 @@ namespace APICatalogo.Controllers
         }
 
         [HttpDelete("{id:int:min(1)}")]
+
         public ActionResult Delete(int id)
         {
             try
