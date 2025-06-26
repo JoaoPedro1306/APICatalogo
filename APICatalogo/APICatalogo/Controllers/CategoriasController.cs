@@ -13,11 +13,12 @@ namespace APICatalogo.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IConfiguration _configuration;
-
-        public CategoriasController(AppDbContext context, IConfiguration configuration)
+        private readonly ILogger _logger;
+        public CategoriasController(AppDbContext context, IConfiguration configuration, ILogger<CategoriasController> logger)
         {
             _context = context;
             _configuration = configuration;
+            _logger = logger;
         }
 
         [HttpGet("LerArquivoConfiguracao")]
