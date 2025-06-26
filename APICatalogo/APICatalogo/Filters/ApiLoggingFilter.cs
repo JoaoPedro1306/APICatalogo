@@ -12,7 +12,7 @@ namespace APICatalogo.Filters
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            // executa antes do action
+            // executa depois do action
             _logger.LogInformation($"### Executando -> OnActionExecuted");
             _logger.LogInformation($"########################################");
             _logger.LogInformation($"{DateTime.Now.ToLongTimeString()}");
