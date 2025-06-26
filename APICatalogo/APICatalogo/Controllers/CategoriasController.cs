@@ -23,7 +23,6 @@ namespace APICatalogo.Controllers
         [HttpGet("LerArquivoConfiguracao")]
         public ActionResult<string> GetValores()
         {
-            throw new Exception("Testando tratamento global");
             var valor1 = _configuration["chave1"];
             var valor2 = _configuration["chave2"];
 
