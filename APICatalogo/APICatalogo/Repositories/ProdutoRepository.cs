@@ -21,14 +21,14 @@ namespace APICatalogo.Repositories
             var produto = _context.Produtos.FirstOrDefault(p => p.ProdutoId == id);
             
             if(produto is null)
-                throw new InvalidOperationException("Produto é null");
+                throw new InvalidOperationException("Produto é null.");
 
             return produto;
         }
         public Produto Create(Produto produto)
         {
             if (produto is null)
-                throw new InvalidOperationException("Produto é null");
+                throw new InvalidOperationException("Produto é null.");
 
             _context.Produtos.Add(produto);
             _context.SaveChanges();
@@ -39,7 +39,7 @@ namespace APICatalogo.Repositories
         public bool Update(Produto produto)
         {
             if (produto is null)
-                throw new InvalidOperationException("Produto é null");
+                throw new InvalidOperationException("Produto é null.");
 
             if(_context.Produtos.Any(p => p.ProdutoId == produto.ProdutoId))
             {

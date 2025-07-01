@@ -51,7 +51,7 @@ namespace APICatalogo.Controllers
             if (produto is null)
             {
                 _logger.LogWarning($"Dados inválidos.");
-                return BadRequest("Dados inválidos");
+                return BadRequest("Dados inválidos.");
             }
 
             var novoProduto = _repository.Create(produto);
@@ -74,7 +74,7 @@ namespace APICatalogo.Controllers
             if (atualizado)
                 return Ok(produto);
 
-            return StatusCode(500, $"Falha ao atualizar o produto de id = {id}");
+            return StatusCode(500, $"Falha ao atualizar o produto de id = {id}.");
         }
 
         [HttpDelete("{id:int:min(1)}")]
@@ -83,9 +83,9 @@ namespace APICatalogo.Controllers
         {
             bool deletado = _repository.Delete(id);
             if (deletado)
-                return Ok($"Produto de id = {id} foi excluído");
+                return Ok($"Produto de id = {id} foi excluído.");
 
-            return StatusCode(500, $"Falha ao excluir o produto de id={id}");
+            return StatusCode(500, $"Falha ao excluir o produto de id={id}.");
         }
     }
 }
