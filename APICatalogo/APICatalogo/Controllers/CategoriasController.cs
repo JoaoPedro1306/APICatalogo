@@ -23,7 +23,7 @@ namespace APICatalogo.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Categoria>> Get()
         {
-            var categorias = _repository.GetCategorias();
+            var categorias = _repository.GetAll();
 
             return Ok(categorias);
         }
@@ -31,7 +31,7 @@ namespace APICatalogo.Controllers
         [HttpGet("{id:int:min(1)}", Name = "ObterCategoria")]
         public ActionResult<Categoria> Get(int id)
         {
-            var categoria = _repository.GetCategoria(id);
+            var categoria = _repository.Get(c => c.CategoriaId == id);
 
             if (categoria is null)
             {
@@ -74,9 +74,15 @@ namespace APICatalogo.Controllers
         [HttpDelete("{id:int:min(1)}")]
         public ActionResult Delete(int id)
         {
-            var categoriaDeletada = _repository.Delete(id);
+            var categoria = _repository.Get(c => c.CategoriaId == id);
+            if (categoria is null)
+            {
+                _logger.LogWarning($"Categoria com id = {id} não encontrada.");
+                return NotFound($"Categoria com id = {id} não encontrada.");
+            }
 
-            return Ok(categoriaDeletada);
+            var categoriaExcluida = _repository.Delete(categoria);
+            return Ok(categoriaExcluida);
         }
     }
 }
