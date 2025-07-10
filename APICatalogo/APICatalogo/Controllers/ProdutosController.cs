@@ -11,18 +11,18 @@ namespace APICatalogo.Controllers
     [ApiController]
     public class ProdutosController : ControllerBase
     {
-        private readonly IProdutoRepository _repository;
+        private readonly IUnitOfWork _uof;
         private readonly ILogger _logger;
-        public ProdutosController(IProdutoRepository repository, ILogger<ProdutosController> logger)
+        public ProdutosController(IUnitOfWork uof, ILogger<ProdutosController> logger)
         {
-            _repository = repository;
+            _uof = uof;
             _logger = logger;
         }
 
         [HttpGet]
         public ActionResult<IEnumerable<Produto>> Get()
         {
-            var produtos = _repository.GetAll();
+            var produtos = _uof.ProdutoRepository.GetAll();
             if (produtos is null)
             {
                 return NotFound("Produtos não encontrados.");
@@ -34,7 +34,7 @@ namespace APICatalogo.Controllers
         [HttpGet("{id:int:min(1)}", Name = "ObterProduto")]
         public ActionResult<Produto> Get(int id)
         {
-            var produto = _repository.Get(p => p.ProdutoId == id);
+            var produto = _uof.ProdutoRepository.Get(p => p.ProdutoId == id);
 
             if (produto is null)
             {
@@ -48,7 +48,7 @@ namespace APICatalogo.Controllers
         [HttpGet("produtos/{id:int:min(1)}")]
         public ActionResult <IEnumerable<Produto>> GetProdutosCategoria(int id)
         {
-            var produtos = _repository.GetProdutoPorCategoria(id);
+            var produtos = _uof.ProdutoRepository.GetProdutoPorCategoria(id);
             if(produtos is null)
                 return NotFound();
 
@@ -64,7 +64,8 @@ namespace APICatalogo.Controllers
                 return BadRequest("Dados inválidos");
             }
 
-            var novoProduto = _repository.Create(produto);
+            var novoProduto = _uof.ProdutoRepository.Create(produto);
+            _uof.Commit();
 
             return new CreatedAtRouteResult("ObterProduto",
                 new { id = novoProduto.ProdutoId }, novoProduto);
@@ -79,7 +80,8 @@ namespace APICatalogo.Controllers
                 return BadRequest("Dados inválidos.");
             }
 
-            var produtoAtualizado = _repository.Update(produto);
+            var produtoAtualizado = _uof.ProdutoRepository.Update(produto);
+            _uof.Commit();
 
             return Ok(produtoAtualizado);
         }
@@ -88,13 +90,15 @@ namespace APICatalogo.Controllers
 
         public ActionResult Delete(int id)
         {
-            var produto = _repository.Get(p => p.ProdutoId == id);
+            var produto = _uof.ProdutoRepository.Get(p => p.ProdutoId == id);
             if(produto is null)
             {
                 return NotFound("Produto não encontrado.");
             }
 
-            var produtoDeletado = _repository.Delete(produto);
+            var produtoDeletado = _uof.ProdutoRepository.Delete(produto);
+            _uof.Commit();
+
             return Ok(produtoDeletado);
         }
     }
